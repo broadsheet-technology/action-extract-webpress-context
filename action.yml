@@ -1,0 +1,6 @@
+name: "extract-webpress-context"
+inputs:
+
+runs:
+  using: "node16"
+  main: "dist/index.js"
