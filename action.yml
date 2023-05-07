@@ -27,7 +27,6 @@ runs:
       with:
         images: ${{ inputs.name }}
         tags: |
-          type=ref,event=branch
           type=ref,event=pr
           type=semver,pattern={{env.VERSION}}
           type=semver,pattern={{major}}.{{minor}}.{{patch}}
