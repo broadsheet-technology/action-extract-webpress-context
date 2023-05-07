@@ -17,6 +17,7 @@ runs:
   using: "composite"
   steps:
     - name: Extract version
+      id: extract
       shell: bash
       run: |
         VERSION=$(jq -r '.version' ./package.json)
