@@ -28,3 +28,6 @@ runs:
           type=ref,event=pr
           type=semver,pattern={{env.VERSION}}
           type=semver,pattern={{major}}.{{minor}}.{{patch}}
+      outputs:
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
