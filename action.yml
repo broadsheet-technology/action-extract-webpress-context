@@ -27,6 +27,6 @@ runs:
       with:
         images: ${{ inputs.name }}
         tags: |
+          type=raw,value=latest,enable={{is_default_branch}}
+          type=semver,pattern={{version}},value={{env.VERSION}},enable={{is_default_branch}}
           type=ref,event=pr
-          type=semver,pattern={{env.VERSION}}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}}
