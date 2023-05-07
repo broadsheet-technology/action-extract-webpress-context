@@ -9,6 +9,9 @@ outputs:
     value: ${{ steps.meta.outputs.tags }}
   labels:
     value: ${{ steps.meta.outputs.labels }}
+  version:
+    description: "The version extracted from package.json."
+    value: ${{ steps.extract.outputs.version }}
 
 runs:
   using: "composite"
@@ -17,8 +20,7 @@ runs:
       shell: bash
       run: |
         VERSION=$(jq -r '.version' ./package.json)
-        echo "VERSION=$VERSION"
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "::set-output name=version::$VERSION"
 
     - name: Extract metadata (tags, labels) for Docker
       id: meta
@@ -27,5 +29,5 @@ runs:
         images: ${{ inputs.name }}
         tags: |
           type=raw,value=latest,enable={{is_default_branch}}
-          type=semver,pattern={{version}},value={{env.VERSION}},enable={{is_default_branch}}
+          type=semver,pattern={{version}},value=${{steps.extract.outputs.version}},enable={{is_default_branch}}
           type=ref,event=pr
