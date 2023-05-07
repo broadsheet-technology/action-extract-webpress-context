@@ -4,6 +4,12 @@ inputs:
     description: "Name of docker image to push."
     required: true
 
+outputs:
+  tags:
+    value: ${{ steps.meta.outputs.tags }}
+  labels:
+    value: ${{ steps.meta.outputs.labels }}
+
 runs:
   using: "composite"
   steps:
@@ -28,6 +34,3 @@ runs:
           type=ref,event=pr
           type=semver,pattern={{env.VERSION}}
           type=semver,pattern={{major}}.{{minor}}.{{patch}}
-      outputs:
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
