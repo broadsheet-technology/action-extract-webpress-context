@@ -1,6 +1,30 @@
 name: "extract-webpress-context"
 inputs:
+  name:
+    description: "Name of docker image to push."
+    required: true
 
 runs:
-  using: "node16"
-  main: "dist/index.js"
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Extract version
+      shell: bash
+      run: |
+        VERSION=$(jq -r '.version' ./package.json)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        DIR=$(grep -oP '(?<=dir: \x27).*?(?=\x27,)' stencil.config.ts)
+        echo "THEMEDIR=$DIR" >> $GITHUB_ENV
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ inputs.name }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{env.VERSION}}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}}
