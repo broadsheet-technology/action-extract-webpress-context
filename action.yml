@@ -17,9 +17,8 @@ runs:
       shell: bash
       run: |
         VERSION=$(jq -r '.version' ./package.json)
+        echo "VERSION=$VERSION"
         echo "VERSION=$VERSION" >> $GITHUB_ENV
-        DIR=$(grep -oP '(?<=dir: \x27).*?(?=\x27,)' stencil.config.ts)
-        echo "THEMEDIR=$DIR" >> $GITHUB_ENV
 
     - name: Extract metadata (tags, labels) for Docker
       id: meta
